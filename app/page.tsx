@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 
 type Step = 'INIT' | 'VERIFY' | 'RECORD' | 'SIGNED';
 
@@ -94,8 +95,13 @@ export default function Home() {
         </div>
       )}
 
-      <footer className="mt-16 text-gray-800 text-xs tracking-widest">
-        区块链存证 · 仅作技术演示 · 不构成法律效力
+      <footer className="mt-16 text-gray-800 text-xs tracking-widest text-center space-y-2">
+        <p>区块链存证 · 仅作技术演示 · 不构成法律效力</p>
+        <p>
+          <Link href="/wallet" className="text-red-900 hover:text-red-700 underline">
+            → 连接钱包 / Connect Wallet
+          </Link>
+        </p>
       </footer>
     </main>
   );

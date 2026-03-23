@@ -13,7 +13,7 @@ contract ConsentRecord {
     mapping(bytes32 => Agreement) public agreements;
     mapping(address => uint256) private nonces;
 
-    event ConsentLogged(bytes32 indexed agreementId, address indexed initiator, address indexed participant, uint256 timestamp);
+    event ConsentCreated(bytes32 indexed agreementId, address indexed initiator, address indexed participant, uint256 timestamp);
     event ConsentRevoked(bytes32 indexed agreementId, uint256 timestamp);
 
     function createConsent(address _participant, bytes32 _contentHash) public returns (bytes32) {
@@ -31,7 +31,7 @@ contract ConsentRecord {
             isRevoked: false
         });
 
-        emit ConsentLogged(agreementId, msg.sender, _participant, block.timestamp);
+        emit ConsentCreated(agreementId, msg.sender, _participant, block.timestamp);
         return agreementId;
     }
 
@@ -42,5 +42,10 @@ contract ConsentRecord {
         require(!agree.isRevoked, "Already revoked");
         agree.isRevoked = true;
         emit ConsentRevoked(_agreementId, block.timestamp);
+    }
+
+    function isConsentValid(bytes32 _agreementId) external view returns (bool) {
+        Agreement storage agree = agreements[_agreementId];
+        return agree.timestamp != 0 && !agree.isRevoked;
     }
 }
